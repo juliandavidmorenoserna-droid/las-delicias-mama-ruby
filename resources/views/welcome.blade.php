@@ -90,6 +90,9 @@
             text-align: center;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.10);
             border-top: 5px solid #f48fb1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .modulo h3 {
@@ -192,11 +195,13 @@
             <!-- INVENTARIO -->
             <div class="modulo">
 
-                <h3>Inventario</h3>
+                <div>
+                    <h3>Inventario</h3>
 
-                <p>
-                    Consulta y controla los productos disponibles.
-                </p>
+                    <p>
+                        Consulta y controla los insumos y stock disponibles.
+                    </p>
+                </div>
 
                 <a href="/inventario" class="boton">
                     Ingresar
@@ -208,11 +213,13 @@
             <!-- VENTAS -->
             <div class="modulo">
 
-                <h3>Ventas</h3>
+                <div>
+                    <h3>Ventas</h3>
 
-                <p>
-                    Registra y consulta las ventas del restaurante.
-                </p>
+                    <p>
+                        Registra y consulta las ventas del restaurante.
+                    </p>
+                </div>
 
                 <a href="#" class="boton">
                     Ingresar
@@ -224,11 +231,13 @@
             <!-- EMPLEADOS -->
             <div class="modulo">
 
-                <h3>Empleados</h3>
+                <div>
+                    <h3>Empleados</h3>
 
-                <p>
-                    Gestiona la información de los empleados.
-                </p>
+                    <p>
+                        Gestiona la información de los empleados.
+                    </p>
+                </div>
 
                 <a href="#" class="boton">
                     Ingresar
@@ -240,11 +249,13 @@
             <!-- PAGOS -->
             <div class="modulo">
 
-                <h3>Pagos</h3>
+                <div>
+                    <h3>Pagos</h3>
 
-                <p>
-                    Controla los pagos realizados a los empleados.
-                </p>
+                    <p>
+                        Controla los pagos realizados a los empleados.
+                    </p>
+                </div>
 
                 <a href="#" class="boton">
                     Ingresar
@@ -256,13 +267,15 @@
             <!-- PRODUCTOS -->
             <div class="modulo">
 
-                <h3>Productos</h3>
+                <div>
+                    <h3>Productos</h3>
 
-                <p>
-                    Administra los productos utilizados en el restaurante.
-                </p>
+                    <p>
+                        Administra la carta de platos, bebidas y precios a la venta.
+                    </p>
+                </div>
 
-                <a href="#" class="boton">
+                <a href="/productos" class="boton">
                     Ingresar
                 </a>
 
@@ -272,11 +285,13 @@
             <!-- REPORTES -->
             <div class="modulo">
 
-                <h3>Reportes</h3>
+                <div>
+                    <h3>Reportes</h3>
 
-                <p>
-                    Consulta información y resultados del sistema.
-                </p>
+                    <p>
+                        Consulta información y resultados del sistema.
+                    </p>
+                </div>
 
                 <a href="#" class="boton">
                     Ingresar
