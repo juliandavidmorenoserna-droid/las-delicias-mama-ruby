@@ -67,6 +67,7 @@
             font-weight: bold;
             border: none;
             cursor: pointer;
+            transition: 0.2s;
         }
 
         .boton:hover {
@@ -88,6 +89,13 @@
             padding: 15px;
             border-radius: 10px;
             margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .mensaje-error {
+            background: #f8d7da;
+            border: 1px solid #f5c2c7;
+            color: #842029;
         }
 
         .tabla-contenedor {
@@ -108,11 +116,13 @@
             color: white;
             padding: 15px;
             text-align: left;
+            font-size: 15px;
         }
 
         td {
-            padding: 15px;
+            padding: 14px 15px;
             border-bottom: 1px solid #eee;
+            vertical-align: middle;
         }
 
         tr:hover {
@@ -125,6 +135,7 @@
             border-radius: 20px;
             font-size: 13px;
             font-weight: bold;
+            text-align: center;
         }
 
         .disponible {
@@ -142,9 +153,55 @@
             color: #721c24;
         }
 
+        .acciones {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-accion {
+            display: inline-block;
+            padding: 6px 11px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-ver {
+            background: #3b82c4;
+            color: white;
+        }
+
+        .btn-ver:hover {
+            background: #285d8f;
+        }
+
+        .btn-editar {
+            background: #d4a017;
+            color: white;
+        }
+
+        .btn-editar:hover {
+            background: #b5870f;
+        }
+
+        .btn-eliminar {
+            background: #c93b3b;
+            color: white;
+        }
+
+        .btn-eliminar:hover {
+            background: #a32828;
+        }
+
         .sin-productos {
             text-align: center;
-            padding: 30px;
+            padding: 35px;
             color: #777;
         }
 
@@ -175,7 +232,7 @@
                 </p>
             </div>
 
-            <a href="/inventario/crear" class="boton">
+            <a href="{{ route('inventario.crear') }}" class="boton">
                 + Registrar producto
             </a>
 
@@ -184,6 +241,12 @@
         @if(session('success'))
             <div class="mensaje">
                 {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="mensaje mensaje-error">
+                {{ session('error') }}
             </div>
         @endif
 
@@ -199,6 +262,7 @@
                         <th>Unidad</th>
                         <th>Stock mínimo</th>
                         <th>Estado</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
 
@@ -222,7 +286,7 @@
                         <tr>
 
                             <td>
-                                {{ $producto->nombre }}
+                                <strong>{{ $producto->nombre }}</strong>
                             </td>
 
                             <td>
@@ -247,12 +311,52 @@
                                 </span>
                             </td>
 
+                            <td>
+                                <div class="acciones">
+
+                                    <a
+                                        href="{{ route('inventario.ver', $producto) }}"
+                                        class="btn-accion btn-ver"
+                                        title="Ver detalles"
+                                    >
+                                        Ver
+                                    </a>
+
+                                    <a
+                                        href="{{ route('inventario.editar', $producto) }}"
+                                        class="btn-accion btn-editar"
+                                        title="Editar producto"
+                                    >
+                                        Editar
+                                    </a>
+
+                                    <form
+                                        action="{{ route('inventario.eliminar', $producto) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('¿Estás seguro de que deseas eliminar &quot;{{ $producto->nombre }}&quot; del inventario?');"
+                                        style="display: inline;"
+                                    >
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button
+                                            type="submit"
+                                            class="btn-accion btn-eliminar"
+                                            title="Eliminar producto"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </td>
+
                         </tr>
 
                     @empty
 
                         <tr>
-                            <td colspan="6" class="sin-productos">
+                            <td colspan="7" class="sin-productos">
                                 No hay productos registrados en el inventario.
                             </td>
                         </tr>

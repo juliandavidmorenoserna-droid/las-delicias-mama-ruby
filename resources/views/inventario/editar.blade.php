@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Registrar producto - Las Delicias de Mamá Ruby</title>
+    <title>Editar producto - Las Delicias de Mamá Ruby</title>
 
     <style>
         * {
@@ -149,15 +149,16 @@
 
         <div class="tarjeta">
 
-            <h1>Registrar producto</h1>
+            <h1>Editar producto</h1>
 
             <p class="descripcion">
-                Agrega un nuevo producto al inventario del restaurante.
+                Modifica los datos del producto o insumo en el inventario.
             </p>
 
-            <form action="{{ route('inventario.guardar') }}" method="POST">
+            <form action="{{ route('inventario.actualizar', $producto) }}" method="POST">
 
                 @csrf
+                @method('PUT')
 
                 <div class="campo">
                     <label for="nombre">
@@ -168,7 +169,7 @@
                         type="text"
                         id="nombre"
                         name="nombre"
-                        value="{{ old('nombre') }}"
+                        value="{{ old('nombre', $producto->nombre) }}"
                         placeholder="Ejemplo: Arroz"
                         required
                     >
@@ -194,23 +195,23 @@
                             Seleccione una categoría
                         </option>
 
-                        <option value="Alimentos"
-                            {{ old('categoria') == 'Alimentos' ? 'selected' : '' }}>
+                        @php
+                            $categoriaActual = old('categoria', $producto->categoria);
+                        @endphp
+
+                        <option value="Alimentos" {{ $categoriaActual == 'Alimentos' ? 'selected' : '' }}>
                             Alimentos
                         </option>
 
-                        <option value="Bebidas"
-                            {{ old('categoria') == 'Bebidas' ? 'selected' : '' }}>
+                        <option value="Bebidas" {{ $categoriaActual == 'Bebidas' ? 'selected' : '' }}>
                             Bebidas
                         </option>
 
-                        <option value="Aseo"
-                            {{ old('categoria') == 'Aseo' ? 'selected' : '' }}>
+                        <option value="Aseo" {{ $categoriaActual == 'Aseo' ? 'selected' : '' }}>
                             Aseo
                         </option>
 
-                        <option value="Otros"
-                            {{ old('categoria') == 'Otros' ? 'selected' : '' }}>
+                        <option value="Otros" {{ $categoriaActual == 'Otros' ? 'selected' : '' }}>
                             Otros
                         </option>
                     </select>
@@ -231,7 +232,7 @@
                         type="number"
                         id="cantidad"
                         name="cantidad"
-                        value="{{ old('cantidad') }}"
+                        value="{{ old('cantidad', $producto->cantidad) }}"
                         min="0"
                         step="0.01"
                         placeholder="Ejemplo: 20"
@@ -259,28 +260,27 @@
                             Seleccione una unidad
                         </option>
 
-                        <option value="Unidades"
-                            {{ old('unidad') == 'Unidades' ? 'selected' : '' }}>
+                        @php
+                            $unidadActual = old('unidad', $producto->unidad);
+                        @endphp
+
+                        <option value="Unidades" {{ $unidadActual == 'Unidades' ? 'selected' : '' }}>
                             Unidades
                         </option>
 
-                        <option value="Kg"
-                            {{ old('unidad') == 'Kg' ? 'selected' : '' }}>
+                        <option value="Kg" {{ $unidadActual == 'Kg' ? 'selected' : '' }}>
                             Kilogramos (Kg)
                         </option>
 
-                        <option value="Gramos"
-                            {{ old('unidad') == 'Gramos' ? 'selected' : '' }}>
+                        <option value="Gramos" {{ $unidadActual == 'Gramos' ? 'selected' : '' }}>
                             Gramos
                         </option>
 
-                        <option value="Litros"
-                            {{ old('unidad') == 'Litros' ? 'selected' : '' }}>
+                        <option value="Litros" {{ $unidadActual == 'Litros' ? 'selected' : '' }}>
                             Litros
                         </option>
 
-                        <option value="Mililitros"
-                            {{ old('unidad') == 'Mililitros' ? 'selected' : '' }}>
+                        <option value="Mililitros" {{ $unidadActual == 'Mililitros' ? 'selected' : '' }}>
                             Mililitros
                         </option>
                     </select>
@@ -301,7 +301,7 @@
                         type="number"
                         id="stock_minimo"
                         name="stock_minimo"
-                        value="{{ old('stock_minimo') }}"
+                        value="{{ old('stock_minimo', $producto->stock_minimo) }}"
                         min="0"
                         step="0.01"
                         placeholder="Ejemplo: 5"
@@ -328,7 +328,7 @@
                         type="submit"
                         class="boton"
                     >
-                        Guardar producto
+                        Guardar cambios
                     </button>
 
                 </div>
