@@ -11,87 +11,90 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            font-family: Arial, sans-serif;
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background-color: #fff8f2;
-            color: #4a2c2a;
+            min-height: 100vh;
+            background: #fffaf2;
+            color: #4b2418;
         }
 
         header {
-            background: linear-gradient(135deg, #f7b6d2, #f48fb1);
+            background: white;
             padding: 20px;
             text-align: center;
-            border-bottom: 5px solid #d4a017;
+            border-bottom: 4px solid #f2c94c;
         }
 
         header img {
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-            background-color: white;
-            border-radius: 50%;
-            padding: 6px;
-        }
-
-        header h1 {
-            margin-top: 10px;
-            color: #4a2c2a;
-        }
-
-        header p {
-            color: #244a73;
-            margin-top: 5px;
+            width: 180px;
+            max-width: 80%;
         }
 
         .contenedor {
+            width: 90%;
             max-width: 1100px;
             margin: 40px auto;
-            padding: 0 20px;
         }
 
-        .titulo {
-            background-color: white;
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.10);
-        }
-
-        .titulo h2 {
-            color: #d14d72;
-            margin-bottom: 10px;
-        }
-
-        .acciones {
+        .encabezado {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            color: #d63384;
+            font-size: 32px;
+        }
+
+        .subtitulo {
+            margin-top: 8px;
+            color: #555;
         }
 
         .boton {
             display: inline-block;
-            background-color: #d14d72;
+            background: #d63384;
             color: white;
-            padding: 11px 20px;
-            border-radius: 25px;
             text-decoration: none;
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-weight: bold;
             border: none;
             cursor: pointer;
-            font-weight: bold;
         }
 
         .boton:hover {
-            background-color: #244a73;
+            background: #b82b70;
+        }
+
+        .boton-secundario {
+            background: #3b82c4;
+        }
+
+        .boton-secundario:hover {
+            background: #2d6fa8;
+        }
+
+        .mensaje {
+            background: #d4edda;
+            border: 1px solid #a3cfbb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
         }
 
         .tabla-contenedor {
-            background-color: white;
-            padding: 20px;
+            background: white;
             border-radius: 15px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.10);
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
             overflow-x: auto;
         }
 
@@ -101,22 +104,23 @@
         }
 
         th {
-            background-color: #244a73;
+            background: #3b82c4;
             color: white;
-            padding: 14px;
+            padding: 15px;
             text-align: left;
         }
 
         td {
-            padding: 14px;
+            padding: 15px;
             border-bottom: 1px solid #eee;
         }
 
         tr:hover {
-            background-color: #fff3f7;
+            background: #fffaf2;
         }
 
         .estado {
+            display: inline-block;
             padding: 6px 12px;
             border-radius: 20px;
             font-size: 13px;
@@ -124,38 +128,28 @@
         }
 
         .disponible {
-            background-color: #dff5e1;
-            color: #287a35;
+            background: #d4edda;
+            color: #155724;
         }
 
         .bajo {
-            background-color: #fff0c2;
-            color: #8a6800;
+            background: #fff3cd;
+            color: #856404;
         }
 
         .agotado {
-            background-color: #ffd9d9;
-            color: #a12a2a;
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .sin-productos {
+            text-align: center;
+            padding: 30px;
+            color: #777;
         }
 
         .volver {
             margin-top: 25px;
-        }
-
-        footer {
-            margin-top: 50px;
-            background-color: #244a73;
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .acciones {
-                flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
-            }
         }
     </style>
 </head>
@@ -163,45 +157,37 @@
 <body>
 
     <header>
-
         <img
             src="{{ asset('imagenes/logo.png') }}"
             alt="Logo Las Delicias de Mamá Ruby"
         >
-
-        <h1>Las Delicias de Mamá Ruby</h1>
-
-        <p>Gestión de inventario</p>
-
     </header>
-
 
     <main class="contenedor">
 
-        <section class="titulo">
+        <div class="encabezado">
 
-            <h2>Inventario</h2>
+            <div>
+                <h1>Gestión de inventario</h1>
 
-            <p>
-                Consulta y controla los productos disponibles
-                en el restaurante.
-            </p>
+                <p class="subtitulo">
+                    Control de productos e insumos del restaurante
+                </p>
+            </div>
 
-        </section>
-
-
-        <div class="acciones">
-
-            <h3>Productos registrados</h3>
-
-            <a href="#" class="boton">
+            <a href="/inventario/crear" class="boton">
                 + Registrar producto
             </a>
 
         </div>
 
+        @if(session('success'))
+            <div class="mensaje">
+                {{ session('success') }}
+            </div>
+        @endif
 
-        <section class="tabla-contenedor">
+        <div class="tabla-contenedor">
 
             <table>
 
@@ -211,73 +197,83 @@
                         <th>Categoría</th>
                         <th>Cantidad</th>
                         <th>Unidad</th>
+                        <th>Stock mínimo</th>
                         <th>Estado</th>
                     </tr>
                 </thead>
 
                 <tbody>
 
-                    <tr>
-                        <td>Arroz</td>
-                        <td>Alimentos</td>
-                        <td>20</td>
-                        <td>Kg</td>
-                        <td>
-                            <span class="estado disponible">
-                                Disponible
-                            </span>
-                        </td>
-                    </tr>
+                    @forelse($productos as $producto)
 
-                    <tr>
-                        <td>Aceite</td>
-                        <td>Alimentos</td>
-                        <td>3</td>
-                        <td>Litros</td>
-                        <td>
-                            <span class="estado bajo">
-                                Stock bajo
-                            </span>
-                        </td>
-                    </tr>
+                        @php
+                            if ($producto->cantidad <= 0) {
+                                $estado = 'Agotado';
+                                $claseEstado = 'agotado';
+                            } elseif ($producto->cantidad <= $producto->stock_minimo) {
+                                $estado = 'Stock bajo';
+                                $claseEstado = 'bajo';
+                            } else {
+                                $estado = 'Disponible';
+                                $claseEstado = 'disponible';
+                            }
+                        @endphp
 
-                    <tr>
-                        <td>Gaseosa</td>
-                        <td>Bebidas</td>
-                        <td>0</td>
-                        <td>Unidades</td>
-                        <td>
-                            <span class="estado agotado">
-                                Agotado
-                            </span>
-                        </td>
-                    </tr>
+                        <tr>
+
+                            <td>
+                                {{ $producto->nombre }}
+                            </td>
+
+                            <td>
+                                {{ $producto->categoria }}
+                            </td>
+
+                            <td>
+                                {{ $producto->cantidad }}
+                            </td>
+
+                            <td>
+                                {{ $producto->unidad }}
+                            </td>
+
+                            <td>
+                                {{ $producto->stock_minimo }}
+                            </td>
+
+                            <td>
+                                <span class="estado {{ $claseEstado }}">
+                                    {{ $estado }}
+                                </span>
+                            </td>
+
+                        </tr>
+
+                    @empty
+
+                        <tr>
+                            <td colspan="6" class="sin-productos">
+                                No hay productos registrados en el inventario.
+                            </td>
+                        </tr>
+
+                    @endforelse
 
                 </tbody>
 
             </table>
 
-        </section>
-
+        </div>
 
         <div class="volver">
 
-            <a href="/" class="boton">
+            <a href="/" class="boton boton-secundario">
                 ← Volver al inicio
             </a>
 
         </div>
 
     </main>
-
-
-    <footer>
-
-        <p>
-            Las Delicias de Mamá Ruby © 2026
-        </p>
-
-    </footer>
 
 </body>
 </html>
