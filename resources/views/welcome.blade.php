@@ -16,7 +16,79 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #fff8f2;
-            color: #4a2c2a;
+            color: #4b2418;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* BARRA SUPERIOR DE AUTENTICACIÓN */
+        .barra-auth {
+            background-color: #244a73;
+            color: white;
+            padding: 10px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .auth-usuario {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .auth-usuario strong {
+            color: #f2c94c;
+        }
+
+        .auth-botones {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-auth {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-login {
+            background-color: transparent;
+            color: white;
+            border: 1px solid white;
+        }
+
+        .btn-login:hover {
+            background-color: white;
+            color: #244a73;
+        }
+
+        .btn-registro {
+            background-color: #d14d72;
+            color: white;
+        }
+
+        .btn-registro:hover {
+            background-color: #b82b70;
+        }
+
+        .btn-logout {
+            background-color: #c93b3b;
+            color: white;
+        }
+
+        .btn-logout:hover {
+            background-color: #a32828;
         }
 
         /* ENCABEZADO */
@@ -51,8 +123,21 @@
         /* CONTENEDOR */
         .contenedor {
             max-width: 1100px;
-            margin: 40px auto;
+            margin: 35px auto;
             padding: 0 20px;
+            flex: 1;
+        }
+
+        /* ALERTA DE SESIÓN */
+        .alerta-exito {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: bold;
         }
 
         /* BIENVENIDA */
@@ -74,6 +159,7 @@
         .bienvenida p {
             font-size: 16px;
             line-height: 1.6;
+            color: #555;
         }
 
         /* MÓDULOS */
@@ -93,6 +179,12 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            transition: 0.2s;
+        }
+
+        .modulo:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.14);
         }
 
         .modulo h3 {
@@ -105,6 +197,7 @@
             color: #666;
             margin-bottom: 20px;
             line-height: 1.5;
+            font-size: 14px;
         }
 
         /* BOTONES */
@@ -139,6 +232,11 @@
 
         /* RESPONSIVE */
         @media (max-width: 768px) {
+            .barra-auth {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
 
             header h1 {
                 font-size: 25px;
@@ -158,6 +256,38 @@
 
 <body>
 
+    <!-- BARRA SUPERIOR DE AUTENTICACIÓN -->
+    <div class="barra-auth">
+        @auth
+            <div class="auth-usuario">
+                <span>👋 Conectado como: <strong>{{ Auth::user()->name }}</strong></span>
+                <span style="opacity: 0.7; font-size: 12px;">({{ Auth::user()->email }})</span>
+            </div>
+
+            <div class="auth-botones">
+                <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                    @csrf
+                    <button type="submit" class="btn-auth btn-logout">
+                        Cerrar Sesión
+                    </button>
+                </form>
+            </div>
+        @else
+            <div class="auth-usuario">
+                <span>🔒 Área administrativa del restaurante</span>
+            </div>
+
+            <div class="auth-botones">
+                <a href="{{ route('login') }}" class="btn-auth btn-login">
+                    Iniciar Sesión
+                </a>
+                <a href="{{ route('registro') }}" class="btn-auth btn-registro">
+                    Registrarse
+                </a>
+            </div>
+        @endauth
+    </div>
+
     <!-- ENCABEZADO -->
     <header>
 
@@ -176,6 +306,12 @@
     <!-- CONTENIDO PRINCIPAL -->
     <main class="contenedor">
 
+        @if(session('success'))
+            <div class="alerta-exito">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <!-- BIENVENIDA -->
         <section class="bienvenida">
 
@@ -183,7 +319,7 @@
 
             <p>
                 Administra de manera sencilla la información del restaurante,
-                el inventario, las ventas y los empleados.
+                el inventario, las ventas, el personal y los reportes operativos.
             </p>
 
         </section>
@@ -199,11 +335,11 @@
                     <h3>Inventario</h3>
 
                     <p>
-                        Consulta y controla los insumos y stock disponibles.
+                        Consulta y controla los insumos y stock disponibles en cocina.
                     </p>
                 </div>
 
-                <a href="/inventario" class="boton">
+                <a href="{{ route('inventario.index') }}" class="boton">
                     Ingresar
                 </a>
 
@@ -217,11 +353,11 @@
                     <h3>Ventas</h3>
 
                     <p>
-                        Registra y consulta las ventas del restaurante.
+                        Registra comandas, facturación y consulta las ventas del restaurante.
                     </p>
                 </div>
 
-                <a href="/ventas" class="boton">
+                <a href="{{ route('ventas.index') }}" class="boton">
                     Ingresar
                 </a>
 
@@ -235,11 +371,11 @@
                     <h3>Empleados</h3>
 
                     <p>
-                        Gestiona la información de los empleados.
+                        Gestiona el personal, cargos, salarios y fechas de ingreso.
                     </p>
                 </div>
 
-                <a href="/empleados" class="boton">
+                <a href="{{ route('empleados.index') }}" class="boton">
                     Ingresar
                 </a>
 
@@ -253,11 +389,11 @@
                     <h3>Pagos</h3>
 
                     <p>
-                        Controla los pagos realizados a los empleados.
+                        Controla los pagos de nómina, quincenas y recibos de colaboradores.
                     </p>
                 </div>
 
-                <a href="/pagos" class="boton">
+                <a href="{{ route('pagos.index') }}" class="boton">
                     Ingresar
                 </a>
 
@@ -271,11 +407,11 @@
                     <h3>Productos</h3>
 
                     <p>
-                        Administra la carta de platos, bebidas y precios a la venta.
+                        Administra la carta de platos, bebidas y precios al público.
                     </p>
                 </div>
 
-                <a href="/productos" class="boton">
+                <a href="{{ route('productos.index') }}" class="boton">
                     Ingresar
                 </a>
 
@@ -289,11 +425,11 @@
                     <h3>Reportes</h3>
 
                     <p>
-                        Consulta información y resultados del sistema.
+                        Consulta métricas, balance operativo, ventas y estado de stock.
                     </p>
                 </div>
 
-                <a href="/reportes" class="boton">
+                <a href="{{ route('reportes.index') }}" class="boton">
                     Ingresar
                 </a>
 
