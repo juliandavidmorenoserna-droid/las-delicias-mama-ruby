@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EmpleadoController;
+use App\Http\Controllers\PagoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProductoVentaController;
 use App\Http\Controllers\VentaController;
@@ -91,3 +92,25 @@ Route::put('/empleados/{empleado}', [EmpleadoController::class, 'update'])
 
 Route::delete('/empleados/{empleado}', [EmpleadoController::class, 'destroy'])
     ->name('empleados.eliminar');
+
+// Rutas del módulo de Pagos
+Route::get('/pagos', [PagoController::class, 'index'])
+    ->name('pagos.index');
+
+Route::get('/pagos/crear', [PagoController::class, 'create'])
+    ->name('pagos.crear');
+
+Route::post('/pagos', [PagoController::class, 'store'])
+    ->name('pagos.guardar');
+
+Route::get('/pagos/{pago}', [PagoController::class, 'show'])
+    ->name('pagos.ver');
+
+Route::get('/pagos/{pago}/editar', [PagoController::class, 'edit'])
+    ->name('pagos.editar');
+
+Route::put('/pagos/{pago}', [PagoController::class, 'update'])
+    ->name('pagos.actualizar');
+
+Route::delete('/pagos/{pago}', [PagoController::class, 'destroy'])
+    ->name('pagos.eliminar');
