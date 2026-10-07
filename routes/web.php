@@ -4,6 +4,7 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProductoVentaController;
+use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\VentaController;
 use Illuminate\Support\Facades\Route;
 
@@ -114,3 +115,7 @@ Route::put('/pagos/{pago}', [PagoController::class, 'update'])
 
 Route::delete('/pagos/{pago}', [PagoController::class, 'destroy'])
     ->name('pagos.eliminar');
+
+// Rutas del módulo de Reportes
+Route::get('/reportes', [ReporteController::class, 'index'])
+    ->name('reportes.index');

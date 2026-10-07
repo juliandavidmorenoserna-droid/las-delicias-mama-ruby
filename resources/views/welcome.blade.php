@@ -293,7 +293,7 @@
                     </p>
                 </div>
 
-                <a href="#" class="boton">
+                <a href="/reportes" class="boton">
                     Ingresar
                 </a>
 
