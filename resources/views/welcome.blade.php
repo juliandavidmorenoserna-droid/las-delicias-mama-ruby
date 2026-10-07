@@ -16,7 +16,7 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #fff8f2;
-            color: #4a2c2a;
+            color: #4b2418;
         }
 
         /* ENCABEZADO */
@@ -239,7 +239,7 @@
                     </p>
                 </div>
 
-                <a href="#" class="boton">
+                <a href="/empleados" class="boton">
                     Ingresar
                 </a>
 

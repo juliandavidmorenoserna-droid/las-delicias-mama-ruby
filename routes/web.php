@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProductoVentaController;
 use App\Http\Controllers\VentaController;
@@ -68,3 +69,25 @@ Route::get('/ventas/{venta}', [VentaController::class, 'show'])
 
 Route::delete('/ventas/{venta}', [VentaController::class, 'destroy'])
     ->name('ventas.eliminar');
+
+// Rutas del módulo de Empleados
+Route::get('/empleados', [EmpleadoController::class, 'index'])
+    ->name('empleados.index');
+
+Route::get('/empleados/crear', [EmpleadoController::class, 'create'])
+    ->name('empleados.crear');
+
+Route::post('/empleados', [EmpleadoController::class, 'store'])
+    ->name('empleados.guardar');
+
+Route::get('/empleados/{empleado}', [EmpleadoController::class, 'show'])
+    ->name('empleados.ver');
+
+Route::get('/empleados/{empleado}/editar', [EmpleadoController::class, 'edit'])
+    ->name('empleados.editar');
+
+Route::put('/empleados/{empleado}', [EmpleadoController::class, 'update'])
+    ->name('empleados.actualizar');
+
+Route::delete('/empleados/{empleado}', [EmpleadoController::class, 'destroy'])
+    ->name('empleados.eliminar');
