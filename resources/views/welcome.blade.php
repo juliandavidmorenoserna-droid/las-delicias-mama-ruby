@@ -328,6 +328,23 @@
         <!-- MÓDULOS -->
         <section class="modulos">
 
+            <!-- CAJA Y COBRO DE MESAS (EN VIVO) -->
+            <div class="modulo" style="border-top: 5px solid #28a745; background: #fbfffa;">
+
+                <div>
+                    <h3 style="color: #218838;">💵 Caja y Cobro de Mesas</h3>
+
+                    <p>
+                        Monitorea en tiempo real los platos y valores tomados por los meseros en cada mesa, cobra las cuentas y libera las mesas.
+                    </p>
+                </div>
+
+                <a href="{{ route('admin.caja.index') }}" class="boton" style="background-color: #28a745;">
+                    Abrir Caja
+                </a>
+
+            </div>
+
             <!-- INVENTARIO -->
             <div class="modulo">
 

@@ -629,10 +629,28 @@
                             <span class="total-valor">${{ number_format($comanda->total, 2) }}</span>
                         </div>
 
+                        {{-- ESTADO DE CUENTA PEDIDA --}}
+                        @if($comanda->estado === 'Por Cobrar')
+                            <div style="background: #fff3cd; border: 1px solid #ffeeba; border-radius: 10px; padding: 12px; margin-top: 15px; text-align: center; color: #856404; font-weight: bold; font-size: 13px;">
+                                🔔 ¡Cuenta enviada a Caja! La Administradora ya tiene la mesa lista para cobrar.
+                            </div>
+                        @endif
+
                         {{-- ACCIONES --}}
                         <div class="acciones">
 
-                            {{-- COBRAR --}}
+                            {{-- ENVIAR A CAJA PARA QUE LA ADMINISTRADORA COBRE --}}
+                            <form
+                                action="{{ route('empleado.solicitarCuenta', $comanda->id) }}"
+                                method="POST"
+                            >
+                                @csrf
+                                <button type="submit" class="btn-cobrar" style="background: #e67e22;">
+                                    🔔 Enviar Cuenta a Caja — ${{ number_format($comanda->total, 2) }}
+                                </button>
+                            </form>
+
+                            {{-- COBRAR DIRECTO (SI EL EMPLEADO TAMBIÉN COBRA) --}}
                             <form
                                 action="{{ route('empleado.cobrar', $comanda->id) }}"
                                 method="POST"
@@ -640,7 +658,7 @@
                             >
                                 @csrf
                                 <button type="submit" class="btn-cobrar">
-                                    💳 Cobrar — ${{ number_format($comanda->total, 2) }}
+                                    💳 Cobrar Aquí y Liberar Mesa
                                 </button>
                             </form>
 

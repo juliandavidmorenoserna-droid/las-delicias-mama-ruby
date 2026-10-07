@@ -21,6 +21,8 @@ class Mesa extends Model
 
     public function comandaActiva()
     {
-        return $this->hasOne(PedidoMesa::class, 'mesa_id')->where('estado', 'Abierta')->latest();
+        return $this->hasOne(PedidoMesa::class, 'mesa_id')
+            ->whereIn('estado', ['Abierta', 'Por Cobrar'])
+            ->latest();
     }
 }

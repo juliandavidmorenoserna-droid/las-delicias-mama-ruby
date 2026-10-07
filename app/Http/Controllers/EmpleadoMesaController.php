@@ -117,6 +117,23 @@ class EmpleadoMesaController extends Controller
     }
 
     /**
+     * Notificar y enviar la comanda a Caja para que la Administradora la cobre.
+     */
+    public function solicitarCuenta(PedidoMesa $comanda)
+    {
+        $mesa = $comanda->mesa;
+
+        if ($comanda->detalles->isEmpty()) {
+            return back()->with('error', '⛔ No puedes solicitar la cuenta de una mesa vacía. Agrega al menos un plato.');
+        }
+
+        $comanda->update(['estado' => 'Por Cobrar']);
+
+        return redirect()->route('empleado.comanda', $mesa->id)
+            ->with('success', "🔔 ¡Cuenta de la {$mesa->numero} enviada a Caja! La administradora ya puede ver los platos y el total a cobrar de $" . number_format($comanda->total, 2));
+    }
+
+    /**
      * Cobrar la comanda (marcar como pagada y liberar la mesa).
      */
     public function cobrar(PedidoMesa $comanda)

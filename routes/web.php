@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CajaController;
 use App\Http\Controllers\ClienteMenuController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\EmpleadoMesaController;
@@ -46,6 +47,7 @@ Route::middleware(['auth', 'rol:empleado'])->prefix('empleado')->name('empleado.
     Route::get('/mesas/{mesa}/comanda', [EmpleadoMesaController::class, 'comanda'])->name('comanda');
     Route::post('/comanda/{comanda}/agregar', [EmpleadoMesaController::class, 'agregarProducto'])->name('agregar');
     Route::delete('/detalle/{detalle}/quitar', [EmpleadoMesaController::class, 'quitarProducto'])->name('quitar');
+    Route::post('/comanda/{comanda}/solicitar-cuenta', [EmpleadoMesaController::class, 'solicitarCuenta'])->name('solicitarCuenta');
     Route::post('/comanda/{comanda}/cobrar', [EmpleadoMesaController::class, 'cobrar'])->name('cobrar');
     Route::post('/comanda/{comanda}/cancelar', [EmpleadoMesaController::class, 'cancelar'])->name('cancelar');
 
@@ -55,6 +57,10 @@ Route::middleware(['auth', 'rol:empleado'])->prefix('empleado')->name('empleado.
 // RUTAS ADMINISTRATIVAS (requieren rol = admin)
 // ─────────────────────────────────────────────────────────────────────────────
 Route::middleware(['auth', 'rol:admin'])->group(function () {
+
+    // ── Caja y Cobro de Mesas en Vivo (para la Administradora) ─────────────
+    Route::get('/caja', [CajaController::class, 'index'])->name('admin.caja.index');
+    Route::post('/caja/{comanda}/cobrar', [CajaController::class, 'cobrarMesa'])->name('admin.caja.cobrar');
 
     // ── Gestión de Usuarios (admin crea empleados y otros admins) ──────────
     Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');
