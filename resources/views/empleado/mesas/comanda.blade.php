@@ -543,7 +543,7 @@
             <div class="panel">
                 <div class="panel-header">📋 Carta del Restaurante</div>
                 <div class="panel-body">
-                    @foreach($productos as $cat => $platos)
+                    @forelse($productos as $cat => $platos)
                         <div class="catalogo-cat">
                             <div class="catalogo-cat-titulo">{{ $cat }}</div>
                             <div class="catalogo-grid">
@@ -558,7 +558,13 @@
                                 @endforeach
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <div style="text-align: center; padding: 30px 15px; color: #777;">
+                            <div style="font-size: 36px; margin-bottom: 8px;">🍽️</div>
+                            <strong style="color: #4a2c2a; font-size: 15px; display: block; margin-bottom: 6px;">Carta sin platos todavía</strong>
+                            <p style="font-size: 13px;">El Administrador puede registrar los platos reales y sus precios desde el panel principal en <strong>"🍽️ Carta y Precios"</strong>.</p>
+                        </div>
+                    @endforelse
                 </div>
             </div>
 

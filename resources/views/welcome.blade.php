@@ -417,19 +417,19 @@
             </div>
 
 
-            <!-- PRODUCTOS -->
-            <div class="modulo">
+            <!-- CARTA DEL RESTAURANTE (PLATOS Y PRECIOS) -->
+            <div class="modulo" style="border-top: 5px solid #d14d72;">
 
                 <div>
-                    <h3>Productos</h3>
+                    <h3 style="color: #d14d72;">🍽️ Carta y Precios</h3>
 
                     <p>
-                        Administra la carta de platos, bebidas y precios al público.
+                        Configura los platos, bebidas y precios oficiales del restaurante. Lo que agregues aquí es lo que los meseros verán para atender las mesas.
                     </p>
                 </div>
 
-                <a href="{{ route('productos.index') }}" class="boton">
-                    Ingresar
+                <a href="{{ route('productos.index') }}" class="boton" style="background-color: #d14d72;">
+                    Gestionar Carta
                 </a>
 
             </div>

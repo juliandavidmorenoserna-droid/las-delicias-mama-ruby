@@ -183,16 +183,28 @@
                 </div>
 
                 <div class="campo">
-                    <label for="categoria">Categoría *</label>
-                    <select id="categoria" name="categoria" required>
-                        <option value="">Seleccione una categoría</option>
-                        <option value="Almuerzos" {{ old('categoria') == 'Almuerzos' ? 'selected' : '' }}>Almuerzos</option>
-                        <option value="Desayunos" {{ old('categoria') == 'Desayunos' ? 'selected' : '' }}>Desayunos</option>
-                        <option value="Comidas Rápidas" {{ old('categoria') == 'Comidas Rápidas' ? 'selected' : '' }}>Comidas Rápidas</option>
-                        <option value="Bebidas" {{ old('categoria') == 'Bebidas' ? 'selected' : '' }}>Bebidas</option>
-                        <option value="Postres" {{ old('categoria') == 'Postres' ? 'selected' : '' }}>Postres</option>
-                        <option value="Especialidades" {{ old('categoria') == 'Especialidades' ? 'selected' : '' }}>Especialidades</option>
-                    </select>
+                    <label for="categoria">Categoría del plato o producto *</label>
+                    <input
+                        type="text"
+                        id="categoria"
+                        name="categoria"
+                        list="categorias-sugeridas"
+                        value="{{ old('categoria') }}"
+                        placeholder="Ejemplo: Platos Fuertes, Bebidas, Bandejas, Postres..."
+                        required
+                    >
+                    <datalist id="categorias-sugeridas">
+                        <option value="Platos Fuertes">
+                        <option value="Bandejas">
+                        <option value="Sopas">
+                        <option value="Almuerzos">
+                        <option value="Desayunos">
+                        <option value="Bebidas">
+                        <option value="Entradas">
+                        <option value="Postres">
+                        <option value="Comidas Rápidas">
+                    </datalist>
+                    <div class="ayuda">Puedes seleccionar una sugerencia o escribir la categoría que tú quieras.</div>
                     @error('categoria')
                         <div class="error">{{ $message }}</div>
                     @enderror
