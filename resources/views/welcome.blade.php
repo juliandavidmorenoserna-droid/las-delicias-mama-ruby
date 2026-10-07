@@ -221,7 +221,7 @@
                     </p>
                 </div>
 
-                <a href="#" class="boton">
+                <a href="/ventas" class="boton">
                     Ingresar
                 </a>
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProductoVentaController;
+use App\Http\Controllers\VentaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -51,3 +52,19 @@ Route::put('/productos/{producto}', [ProductoVentaController::class, 'update'])
 
 Route::delete('/productos/{producto}', [ProductoVentaController::class, 'destroy'])
     ->name('productos.eliminar');
+
+// Rutas del módulo de Ventas
+Route::get('/ventas', [VentaController::class, 'index'])
+    ->name('ventas.index');
+
+Route::get('/ventas/crear', [VentaController::class, 'create'])
+    ->name('ventas.crear');
+
+Route::post('/ventas', [VentaController::class, 'store'])
+    ->name('ventas.guardar');
+
+Route::get('/ventas/{venta}', [VentaController::class, 'show'])
+    ->name('ventas.ver');
+
+Route::delete('/ventas/{venta}', [VentaController::class, 'destroy'])
+    ->name('ventas.eliminar');
