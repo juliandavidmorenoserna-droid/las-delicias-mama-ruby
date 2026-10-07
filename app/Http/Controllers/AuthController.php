@@ -15,7 +15,7 @@ class AuthController extends Controller
     public function showLogin()
     {
         if (Auth::check()) {
-            return redirect('/');
+            return $this->redirigirPorRol(Auth::user());
         }
 
         return view('auth.login');
@@ -27,11 +27,11 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credenciales = $request->validate([
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required|string',
         ], [
-            'email.required' => 'El correo electrónico es obligatorio.',
-            'email.email' => 'Debes ingresar un correo electrónico válido.',
+            'email.required'    => 'El correo electrónico es obligatorio.',
+            'email.email'       => 'Debes ingresar un correo electrónico válido.',
             'password.required' => 'La contraseña es obligatoria.',
         ]);
 
@@ -40,8 +40,10 @@ class AuthController extends Controller
         if (Auth::attempt($credenciales, $recordar)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/')
-                ->with('success', '¡Bienvenido(a) de nuevo, ' . Auth::user()->name . '!');
+            $usuario = Auth::user();
+
+            return $this->redirigirPorRol($usuario)
+                ->with('success', '¡Bienvenido(a), ' . $usuario->name . '!');
         }
 
         return back()->withErrors([
@@ -55,7 +57,7 @@ class AuthController extends Controller
     public function showRegister()
     {
         if (Auth::check()) {
-            return redirect('/');
+            return $this->redirigirPorRol(Auth::user());
         }
 
         return view('auth.register');
@@ -67,31 +69,35 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $datos = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
+            'name'                  => 'required|string|max:255',
+            'email'                 => 'required|string|email|max:255|unique:users,email',
+            'password'              => 'required|string|min:6|confirmed',
+            'rol'                   => 'required|in:admin,cliente,empleado',
         ], [
-            'name.required' => 'El nombre completo es obligatorio.',
-            'email.required' => 'El correo electrónico es obligatorio.',
-            'email.email' => 'Ingresa un correo electrónico válido.',
-            'email.unique' => 'Este correo ya está registrado en el sistema.',
+            'name.required'     => 'El nombre completo es obligatorio.',
+            'email.required'    => 'El correo electrónico es obligatorio.',
+            'email.email'       => 'Ingresa un correo electrónico válido.',
+            'email.unique'      => 'Este correo ya está registrado en el sistema.',
             'password.required' => 'La contraseña es obligatoria.',
-            'password.min' => 'La contraseña debe tener al menos 6 caracteres.',
-            'password.confirmed' => 'Las contraseñas no coinciden.',
+            'password.min'      => 'La contraseña debe tener al menos 6 caracteres.',
+            'password.confirmed'=> 'Las contraseñas no coinciden.',
+            'rol.required'      => 'Debes seleccionar un tipo de cuenta.',
+            'rol.in'            => 'El tipo de cuenta seleccionado no es válido.',
         ]);
 
         $usuario = User::create([
-            'name' => $datos['name'],
-            'email' => $datos['email'],
+            'name'     => $datos['name'],
+            'email'    => $datos['email'],
             'password' => Hash::make($datos['password']),
+            'rol'      => $datos['rol'],
         ]);
 
         Auth::login($usuario);
 
         $request->session()->regenerate();
 
-        return redirect('/')
-            ->with('success', '¡Cuenta creada con éxito! Bienvenido(a) al sistema de Las Delicias de Mamá Ruby.');
+        return $this->redirigirPorRol($usuario)
+            ->with('success', '¡Cuenta creada con éxito! Bienvenido(a), ' . $usuario->name . '.');
     }
 
     /**
@@ -106,5 +112,17 @@ class AuthController extends Controller
 
         return redirect()->route('login')
             ->with('success', 'Has cerrado sesión correctamente.');
+    }
+
+    /**
+     * Redirigir al usuario según su rol.
+     */
+    private function redirigirPorRol($usuario)
+    {
+        return match ($usuario->rol) {
+            'cliente'  => redirect()->route('cliente.menu'),
+            'empleado' => redirect()->route('empleado.mesas'),
+            default    => redirect()->route('inicio'),
+        };
     }
 }

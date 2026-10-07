@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClienteMenuController;
 use App\Http\Controllers\EmpleadoController;
+use App\Http\Controllers\EmpleadoMesaController;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProductoVentaController;
@@ -9,19 +11,59 @@ use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\VentaController;
 use Illuminate\Support\Facades\Route;
 
+// ─────────────────────────────────────────────────────────────────────────────
+// RUTAS PÚBLICAS (sin autenticación)
+// ─────────────────────────────────────────────────────────────────────────────
+
 // Página de bienvenida / inicio
 Route::get('/', function () {
     return view('welcome');
 })->name('inicio');
 
-// Rutas de autenticación (públicas)
+// Autenticación
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.iniciar');
 Route::get('/registro', [AuthController::class, 'showRegister'])->name('registro');
 Route::post('/registro', [AuthController::class, 'register'])->name('registro.guardar');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Rutas administrativas protegidas (requieren inicio de sesión)
+// ─────────────────────────────────────────────────────────────────────────────
+// RUTAS DE CLIENTE (requieren autenticación con rol = cliente)
+// ─────────────────────────────────────────────────────────────────────────────
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/menu', [ClienteMenuController::class, 'index'])->name('cliente.menu');
+
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RUTAS DE EMPLEADO (requieren autenticación con rol = empleado)
+// ─────────────────────────────────────────────────────────────────────────────
+Route::middleware(['auth'])->prefix('empleado')->name('empleado.')->group(function () {
+
+    // Lista de mesas
+    Route::get('/mesas', [EmpleadoMesaController::class, 'index'])->name('mesas');
+
+    // Ver/abrir comanda de una mesa
+    Route::get('/mesas/{mesa}/comanda', [EmpleadoMesaController::class, 'comanda'])->name('comanda');
+
+    // Agregar producto a comanda
+    Route::post('/comanda/{comanda}/agregar', [EmpleadoMesaController::class, 'agregarProducto'])->name('agregar');
+
+    // Quitar producto de comanda
+    Route::delete('/detalle/{detalle}/quitar', [EmpleadoMesaController::class, 'quitarProducto'])->name('quitar');
+
+    // Cobrar comanda
+    Route::post('/comanda/{comanda}/cobrar', [EmpleadoMesaController::class, 'cobrar'])->name('cobrar');
+
+    // Cancelar comanda
+    Route::post('/comanda/{comanda}/cancelar', [EmpleadoMesaController::class, 'cancelar'])->name('cancelar');
+
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RUTAS ADMINISTRATIVAS (requieren autenticación con rol = admin)
+// ─────────────────────────────────────────────────────────────────────────────
 Route::middleware('auth')->group(function () {
 
     // Módulo de Inventario
@@ -103,4 +145,5 @@ Route::middleware('auth')->group(function () {
     // Módulo de Reportes
     Route::get('/reportes', [ReporteController::class, 'index'])
         ->name('reportes.index');
+
 });

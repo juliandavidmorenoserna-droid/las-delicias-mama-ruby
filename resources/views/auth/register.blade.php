@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Registro de Usuario - Las Delicias de Mamá Ruby</title>
 
     <style>
@@ -31,8 +30,8 @@
         }
 
         header img {
-            width: 130px;
-            height: 130px;
+            width: 110px;
+            height: 110px;
             object-fit: contain;
             background-color: white;
             border-radius: 50%;
@@ -41,14 +40,14 @@
         }
 
         header h1 {
-            font-size: 26px;
+            font-size: 24px;
             color: #4a2c2a;
         }
 
         .contenedor {
             width: 90%;
-            max-width: 500px;
-            margin: 40px auto;
+            max-width: 520px;
+            margin: 35px auto;
         }
 
         .tarjeta-auth {
@@ -63,7 +62,7 @@
             color: #d63384;
             text-align: center;
             font-size: 24px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .tarjeta-auth p.subtitulo {
@@ -105,6 +104,70 @@
             box-shadow: 0 0 0 3px rgba(214, 51, 132, 0.15);
         }
 
+        /* ── Selector de Rol ────────────────────────────────── */
+        .roles-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .rol-opcion {
+            position: relative;
+        }
+
+        .rol-opcion input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .rol-tarjeta {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 8px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+            background: #fafafa;
+        }
+
+        .rol-tarjeta:hover {
+            border-color: #d63384;
+            background: #fff0f6;
+        }
+
+        .rol-opcion input[type="radio"]:checked + .rol-tarjeta {
+            border-color: #d63384;
+            background: #fce8f1;
+            box-shadow: 0 0 0 3px rgba(214, 51, 132, 0.15);
+        }
+
+        .rol-icono {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .rol-nombre {
+            font-size: 13px;
+            font-weight: bold;
+            color: #4b2418;
+        }
+
+        .rol-desc {
+            font-size: 11px;
+            color: #888;
+            margin-top: 3px;
+            line-height: 1.3;
+        }
+
+        /* ─────────────────────────────────────────────────── */
+
         .boton-submit {
             width: 100%;
             background: #d63384;
@@ -132,11 +195,11 @@
 
         .enlace-login {
             text-align: center;
-            margin-top: 25px;
+            margin-top: 22px;
             font-size: 14px;
             color: #666;
             border-top: 1px solid #eee;
-            padding-top: 20px;
+            padding-top: 18px;
         }
 
         .enlace-login a {
@@ -151,7 +214,7 @@
 
         .volver-inicio {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 18px;
         }
 
         .volver-inicio a {
@@ -172,6 +235,12 @@
             margin-top: 40px;
             font-size: 14px;
         }
+
+        @media (max-width: 420px) {
+            .roles-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 
@@ -190,12 +259,13 @@
         <div class="tarjeta-auth">
 
             <h2>Crear Cuenta</h2>
-            <p class="subtitulo">Regístrate para gestionar el sistema del restaurante</p>
+            <p class="subtitulo">Selecciona tu tipo de cuenta y completa tus datos</p>
 
             <form action="{{ route('registro.guardar') }}" method="POST">
 
                 @csrf
 
+                {{-- NOMBRE --}}
                 <div class="campo">
                     <label for="name">Nombre completo *</label>
                     <input
@@ -212,6 +282,7 @@
                     @enderror
                 </div>
 
+                {{-- CORREO --}}
                 <div class="campo">
                     <label for="email">Correo electrónico *</label>
                     <input
@@ -227,6 +298,7 @@
                     @enderror
                 </div>
 
+                {{-- CONTRASEÑA --}}
                 <div class="campo">
                     <label for="password">Contraseña *</label>
                     <input
@@ -241,6 +313,7 @@
                     @enderror
                 </div>
 
+                {{-- CONFIRMAR CONTRASEÑA --}}
                 <div class="campo">
                     <label for="password_confirmation">Confirmar contraseña *</label>
                     <input
@@ -252,21 +325,82 @@
                     >
                 </div>
 
+                {{-- TIPO DE CUENTA / ROL --}}
+                <div class="campo">
+                    <label>Tipo de cuenta *</label>
+
+                    <div class="roles-grid">
+
+                        {{-- ADMINISTRADOR --}}
+                        <div class="rol-opcion">
+                            <input
+                                type="radio"
+                                id="rol_admin"
+                                name="rol"
+                                value="admin"
+                                {{ old('rol', 'admin') === 'admin' ? 'checked' : '' }}
+                            >
+                            <label class="rol-tarjeta" for="rol_admin">
+                                <span class="rol-icono">🛡️</span>
+                                <span class="rol-nombre">Administrador</span>
+                                <span class="rol-desc">Gestión completa del sistema</span>
+                            </label>
+                        </div>
+
+                        {{-- EMPLEADO --}}
+                        <div class="rol-opcion">
+                            <input
+                                type="radio"
+                                id="rol_empleado"
+                                name="rol"
+                                value="empleado"
+                                {{ old('rol') === 'empleado' ? 'checked' : '' }}
+                            >
+                            <label class="rol-tarjeta" for="rol_empleado">
+                                <span class="rol-icono">🧑‍🍳</span>
+                                <span class="rol-nombre">Empleado</span>
+                                <span class="rol-desc">Atiende mesas y toma pedidos</span>
+                            </label>
+                        </div>
+
+                        {{-- CLIENTE --}}
+                        <div class="rol-opcion">
+                            <input
+                                type="radio"
+                                id="rol_cliente"
+                                name="rol"
+                                value="cliente"
+                                {{ old('rol') === 'cliente' ? 'checked' : '' }}
+                            >
+                            <label class="rol-tarjeta" for="rol_cliente">
+                                <span class="rol-icono">🍽️</span>
+                                <span class="rol-nombre">Cliente</span>
+                                <span class="rol-desc">Ve el menú y los platos</span>
+                            </label>
+                        </div>
+
+                    </div>
+
+                    @error('rol')
+                        <div class="error-texto">{{ $message }}</div>
+                    @enderror
+                </div>
+
                 <button type="submit" class="boton-submit">
-                    Registrarse e Ingresar
+                    Crear Cuenta e Ingresar
                 </button>
 
             </form>
 
             <div class="enlace-login">
-                ¿Ya tienes una cuenta registrada?
+                ¿Ya tienes una cuenta?
                 <a href="{{ route('login') }}">Inicia sesión aquí</a>
             </div>
 
         </div>
 
         <div class="volver-inicio">
-            <a href="/">← Volver al inicio</a>
+            <a href="{{ route('inicio') }}">← Volver al inicio</a>
         </div>
 
     </main>
