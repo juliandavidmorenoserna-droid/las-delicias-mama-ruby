@@ -435,6 +435,24 @@
 
             </div>
 
+
+            <!-- USUARIOS Y ACCESOS DEL SISTEMA -->
+            <div class="modulo" style="border-top: 4px solid #244a73;">
+
+                <div>
+                    <h3>👥 Usuarios y Accesos</h3>
+
+                    <p>
+                        Administra el personal autorizado: máximo 2 administradores y registro exclusivo de empleados/meseros.
+                    </p>
+                </div>
+
+                <a href="{{ route('usuarios.index') }}" class="boton" style="background-color: #244a73;">
+                    Gestionar
+                </a>
+
+            </div>
+
         </section>
 
     </main>

@@ -52,7 +52,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Mostrar formulario de registro.
+     * Mostrar formulario de registro (solo para clientes).
      */
     public function showRegister()
     {
@@ -65,6 +65,9 @@ class AuthController extends Controller
 
     /**
      * Registrar un nuevo usuario.
+     *
+     * IMPORTANTE: Solo se permite el rol "cliente" desde el formulario público.
+     * Los empleados y administradores solo pueden ser creados por el admin.
      */
     public function register(Request $request)
     {
@@ -72,7 +75,6 @@ class AuthController extends Controller
             'name'                  => 'required|string|max:255',
             'email'                 => 'required|string|email|max:255|unique:users,email',
             'password'              => 'required|string|min:6|confirmed',
-            'rol'                   => 'required|in:admin,cliente,empleado',
         ], [
             'name.required'     => 'El nombre completo es obligatorio.',
             'email.required'    => 'El correo electrónico es obligatorio.',
@@ -81,23 +83,22 @@ class AuthController extends Controller
             'password.required' => 'La contraseña es obligatoria.',
             'password.min'      => 'La contraseña debe tener al menos 6 caracteres.',
             'password.confirmed'=> 'Las contraseñas no coinciden.',
-            'rol.required'      => 'Debes seleccionar un tipo de cuenta.',
-            'rol.in'            => 'El tipo de cuenta seleccionado no es válido.',
         ]);
 
+        // El registro público SIEMPRE crea un cliente. Nunca admin ni empleado.
         $usuario = User::create([
             'name'     => $datos['name'],
             'email'    => $datos['email'],
             'password' => Hash::make($datos['password']),
-            'rol'      => $datos['rol'],
+            'rol'      => 'cliente',
         ]);
 
         Auth::login($usuario);
 
         $request->session()->regenerate();
 
-        return $this->redirigirPorRol($usuario)
-            ->with('success', '¡Cuenta creada con éxito! Bienvenido(a), ' . $usuario->name . '.');
+        return redirect()->route('cliente.menu')
+            ->with('success', '¡Cuenta creada con éxito! Bienvenido(a), ' . $usuario->name . '. 🍽️');
     }
 
     /**
@@ -117,7 +118,7 @@ class AuthController extends Controller
     /**
      * Redirigir al usuario según su rol.
      */
-    private function redirigirPorRol($usuario)
+    public function redirigirPorRol($usuario)
     {
         return match ($usuario->rol) {
             'cliente'  => redirect()->route('cliente.menu'),

@@ -325,65 +325,18 @@
                     >
                 </div>
 
-                {{-- TIPO DE CUENTA / ROL --}}
-                <div class="campo">
-                    <label>Tipo de cuenta *</label>
-
-                    <div class="roles-grid">
-
-                        {{-- ADMINISTRADOR --}}
-                        <div class="rol-opcion">
-                            <input
-                                type="radio"
-                                id="rol_admin"
-                                name="rol"
-                                value="admin"
-                                {{ old('rol', 'admin') === 'admin' ? 'checked' : '' }}
-                            >
-                            <label class="rol-tarjeta" for="rol_admin">
-                                <span class="rol-icono">🛡️</span>
-                                <span class="rol-nombre">Administrador</span>
-                                <span class="rol-desc">Gestión completa del sistema</span>
-                            </label>
+                {{-- TIPO DE CUENTA: EXCLUSIVAMENTE CLIENTE EN REGISTRO PÚBLICO --}}
+                <div class="campo" style="background: #fdf5e6; border: 1px solid #f1d7a8; border-radius: 10px; padding: 14px; margin-top: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 26px;">🍽️</span>
+                        <div>
+                            <strong style="color: #4a2c2a; font-size: 14px; display: block;">Cuenta de Cliente (Comensal)</strong>
+                            <span style="color: #666; font-size: 12px;">Podrás explorar nuestra carta, menú y precios en línea.</span>
                         </div>
-
-                        {{-- EMPLEADO --}}
-                        <div class="rol-opcion">
-                            <input
-                                type="radio"
-                                id="rol_empleado"
-                                name="rol"
-                                value="empleado"
-                                {{ old('rol') === 'empleado' ? 'checked' : '' }}
-                            >
-                            <label class="rol-tarjeta" for="rol_empleado">
-                                <span class="rol-icono">🧑‍🍳</span>
-                                <span class="rol-nombre">Empleado</span>
-                                <span class="rol-desc">Atiende mesas y toma pedidos</span>
-                            </label>
-                        </div>
-
-                        {{-- CLIENTE --}}
-                        <div class="rol-opcion">
-                            <input
-                                type="radio"
-                                id="rol_cliente"
-                                name="rol"
-                                value="cliente"
-                                {{ old('rol') === 'cliente' ? 'checked' : '' }}
-                            >
-                            <label class="rol-tarjeta" for="rol_cliente">
-                                <span class="rol-icono">🍽️</span>
-                                <span class="rol-nombre">Cliente</span>
-                                <span class="rol-desc">Ve el menú y los platos</span>
-                            </label>
-                        </div>
-
                     </div>
-
-                    @error('rol')
-                        <div class="error-texto">{{ $message }}</div>
-                    @enderror
+                    <p style="font-size: 11px; color: #8c6d3f; margin-top: 8px; border-top: 1px dashed #e6c88f; padding-top: 6px;">
+                        🔒 <em>¿Eres empleado o administrador? Tus credenciales deben ser autorizadas y creadas internamente por la gerencia.</em>
+                    </p>
                 </div>
 
                 <button type="submit" class="boton-submit">
